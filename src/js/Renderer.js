@@ -747,7 +747,7 @@ define([
         $editable.attr('dir', options.direction);
       }
 
-      $editable.html(dom.html($holder) || dom.emptyPara);
+      $editable.html(dom.html($holder) || '');
 
       //031. create codable
       $('<textarea class="note-codable"></textarea>').prependTo($editor);
