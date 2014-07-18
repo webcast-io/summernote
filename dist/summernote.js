@@ -6,7 +6,7 @@
  * Copyright 2013 Alan Hong. and outher contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2014-07-15T10:14Z
+ * Date: 2014-07-18T10:44Z
  */
 (function (factory) {
   /* global define */
@@ -2984,6 +2984,10 @@
 
     var hToolbarAndPopoverClick = function (event) {
       var $btn = $(event.target).closest('[data-event]');
+
+      if ($btn.is('a')) {
+        event.preventDefault();
+      }
 
       if ($btn.length) {
         var sEvent = $btn.attr('data-event'), sValue = $btn.attr('data-value');

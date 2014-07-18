@@ -363,6 +363,10 @@ define([
     var hToolbarAndPopoverClick = function (event) {
       var $btn = $(event.target).closest('[data-event]');
 
+      if ($btn.is('a')) {
+        event.preventDefault();
+      }
+
       if ($btn.length) {
         var sEvent = $btn.attr('data-event'), sValue = $btn.attr('data-value');
 
