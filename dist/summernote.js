@@ -6,7 +6,7 @@
  * Copyright 2013 Alan Hong. and outher contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2014-07-18T10:44Z
+ * Date: 2014-07-15T15:56Z
  */
 (function (factory) {
   /* global define */
@@ -315,7 +315,7 @@
     var isEditable = function (node) {
       return node && $(node).hasClass('note-editable');
     };
-  
+
     var isControlSizing = function (node) {
       return node && $(node).hasClass('note-control-sizing');
     };
@@ -373,12 +373,12 @@
         return node && node.nodeName === sNodeName;
       };
     };
-  
+
     var isPara = function (node) {
       // Chrome(v31.0), FF(v25.0.1) use DIV for paragraph
       return node && /^DIV|^P|^LI|^H[1-7]/.test(node.nodeName);
     };
-  
+
     var isList = function (node) {
       return node && /^UL|^OL/.test(node.nodeName);
     };
@@ -386,7 +386,7 @@
     var isCell = function (node) {
       return node && /^TD|^TH/.test(node.nodeName);
     };
-  
+
     /**
      * find nearest ancestor predicate hit
      *
@@ -402,7 +402,7 @@
       }
       return null;
     };
-  
+
     /**
      * returns new array of ancestor nodes (until predicate hit).
      *
@@ -411,7 +411,7 @@
      */
     var listAncestor = function (node, pred) {
       pred = pred || func.fail;
-  
+
       var aAncestor = [];
       ancestor(node, function (el) {
         aAncestor.push(el);
@@ -419,7 +419,7 @@
       });
       return aAncestor;
     };
-  
+
     /**
      * returns common ancestor node between two nodes.
      *
@@ -433,7 +433,7 @@
       }
       return null; // difference document area
     };
-  
+
     /**
      * listing all Nodes between two nodes.
      * FIXME: nodeA and nodeB must be sorted, use comparePoints later.
@@ -443,7 +443,7 @@
      */
     var listBetween = function (nodeA, nodeB) {
       var aNode = [];
-  
+
       var isStart = false, isEnd = false;
 
       // DFS(depth first search) with commonAcestor.
@@ -457,10 +457,10 @@
           fnWalk(node.childNodes[idx]);
         }
       })(commonAncestor(nodeA, nodeB));
-  
+
       return aNode;
     };
-  
+
     /**
      * listing all previous siblings (until predicate hit).
      * @param {Element} node
@@ -468,7 +468,7 @@
      */
     var listPrev = function (node, pred) {
       pred = pred || func.fail;
-  
+
       var aNext = [];
       while (node) {
         aNext.push(node);
@@ -477,7 +477,7 @@
       }
       return aNext;
     };
-  
+
     /**
      * listing next siblings (until predicate hit).
      *
@@ -486,7 +486,7 @@
      */
     var listNext = function (node, pred) {
       pred = pred || func.fail;
-  
+
       var aNext = [];
       while (node) {
         aNext.push(node);
@@ -518,7 +518,7 @@
 
       return aDescendant;
     };
-  
+
     /**
      * insert node after preceding
      *
@@ -534,7 +534,7 @@
       }
       return node;
     };
-  
+
     /**
      * append elements.
      *
@@ -547,9 +547,9 @@
       });
       return node;
     };
-  
+
     var isText = makePredByNodeName('#text');
-  
+
     /**
      * returns #text's text size or element's childNodes size
      *
@@ -608,7 +608,7 @@
         }
       }
     };
-  
+
     /**
      * return offsetPath(array of offset) from ancestor
      *
@@ -619,7 +619,7 @@
       var aAncestor = list.initial(listAncestor(node, func.eq(ancestor)));
       return $.map(aAncestor, position).reverse();
     };
-  
+
     /**
      * return element from offsetPath(array of offset)
      *
@@ -633,7 +633,7 @@
       }
       return current;
     };
-  
+
     /**
      * split element or #text
      *
@@ -643,16 +643,16 @@
     var split = function (node, offset) {
       if (offset === 0) { return node; }
       if (offset >= length(node)) { return node.nextSibling; }
-  
+
       // splitText
       if (isText(node)) { return node.splitText(offset); }
-  
+
       // splitElement
       var child = node.childNodes[offset];
       node = insertAfter(node.cloneNode(false), node);
       return appends(node, listNext(child));
     };
-  
+
     /**
      * split dom tree by boundaryPoint(pivot and offset)
      *
@@ -682,7 +682,7 @@
     var remove = function (node, bRemoveChild) {
       if (!node || !node.parentNode) { return; }
       if (node.removeNode) { return node.removeNode(bRemoveChild); }
-  
+
       var elParent = node.parentNode;
       if (!bRemoveChild) {
         var aNode = [];
@@ -690,22 +690,21 @@
         for (i = 0, sz = node.childNodes.length; i < sz; i++) {
           aNode.push(node.childNodes[i]);
         }
-  
+
         for (i = 0, sz = aNode.length; i < sz; i++) {
           elParent.insertBefore(aNode[i], node);
         }
       }
-  
+
       elParent.removeChild(node);
     };
-  
+
     var html = function ($node) {
       return dom.isTextarea($node[0]) ? $node.val() : $node.html();
     };
-  
+
     return {
       blank: agent.isMSIE ? '&nbsp;' : '<br/>',
-      emptyPara: '<p><br/></p>',
       isEditable: isEditable,
       isControlSizing: isControlSizing,
       buildLayoutInfo: buildLayoutInfo,
@@ -2870,7 +2869,7 @@
             cmEditor.toTextArea();
           }
 
-          $editable.html($codable.val() || dom.emptyPara);
+          $editable.html($codable.val() || '');
           $editable.height(options.height ? $codable.height() : 'auto');
 
           toolbar.activate($toolbar);
@@ -2984,10 +2983,6 @@
 
     var hToolbarAndPopoverClick = function (event) {
       var $btn = $(event.target).closest('[data-event]');
-
-      if ($btn.is('a')) {
-        event.preventDefault();
-      }
 
       if ($btn.length) {
         var sEvent = $btn.attr('data-event'), sValue = $btn.attr('data-value');
@@ -4044,7 +4039,7 @@
         $editable.attr('dir', options.direction);
       }
 
-      $editable.html(dom.html($holder) || dom.emptyPara);
+      $editable.html(dom.html($holder) || '');
 
       //031. create codable
       $('<textarea class="note-codable"></textarea>').prependTo($editor);

@@ -248,7 +248,7 @@ define([
             cmEditor.toTextArea();
           }
 
-          $editable.html($codable.val() || dom.emptyPara);
+          $editable.html($codable.val() || '');
           $editable.height(options.height ? $codable.height() : 'auto');
 
           toolbar.activate($toolbar);

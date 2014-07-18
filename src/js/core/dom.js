@@ -12,7 +12,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
     var isEditable = function (node) {
       return node && $(node).hasClass('note-editable');
     };
-  
+
     var isControlSizing = function (node) {
       return node && $(node).hasClass('note-control-sizing');
     };
@@ -70,12 +70,12 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
         return node && node.nodeName === sNodeName;
       };
     };
-  
+
     var isPara = function (node) {
       // Chrome(v31.0), FF(v25.0.1) use DIV for paragraph
       return node && /^DIV|^P|^LI|^H[1-7]/.test(node.nodeName);
     };
-  
+
     var isList = function (node) {
       return node && /^UL|^OL/.test(node.nodeName);
     };
@@ -83,7 +83,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
     var isCell = function (node) {
       return node && /^TD|^TH/.test(node.nodeName);
     };
-  
+
     /**
      * find nearest ancestor predicate hit
      *
@@ -99,7 +99,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       }
       return null;
     };
-  
+
     /**
      * returns new array of ancestor nodes (until predicate hit).
      *
@@ -108,7 +108,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
      */
     var listAncestor = function (node, pred) {
       pred = pred || func.fail;
-  
+
       var aAncestor = [];
       ancestor(node, function (el) {
         aAncestor.push(el);
@@ -116,7 +116,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       });
       return aAncestor;
     };
-  
+
     /**
      * returns common ancestor node between two nodes.
      *
@@ -130,7 +130,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       }
       return null; // difference document area
     };
-  
+
     /**
      * listing all Nodes between two nodes.
      * FIXME: nodeA and nodeB must be sorted, use comparePoints later.
@@ -140,7 +140,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
      */
     var listBetween = function (nodeA, nodeB) {
       var aNode = [];
-  
+
       var isStart = false, isEnd = false;
 
       // DFS(depth first search) with commonAcestor.
@@ -154,10 +154,10 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
           fnWalk(node.childNodes[idx]);
         }
       })(commonAncestor(nodeA, nodeB));
-  
+
       return aNode;
     };
-  
+
     /**
      * listing all previous siblings (until predicate hit).
      * @param {Element} node
@@ -165,7 +165,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
      */
     var listPrev = function (node, pred) {
       pred = pred || func.fail;
-  
+
       var aNext = [];
       while (node) {
         aNext.push(node);
@@ -174,7 +174,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       }
       return aNext;
     };
-  
+
     /**
      * listing next siblings (until predicate hit).
      *
@@ -183,7 +183,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
      */
     var listNext = function (node, pred) {
       pred = pred || func.fail;
-  
+
       var aNext = [];
       while (node) {
         aNext.push(node);
@@ -215,7 +215,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
 
       return aDescendant;
     };
-  
+
     /**
      * insert node after preceding
      *
@@ -231,7 +231,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       }
       return node;
     };
-  
+
     /**
      * append elements.
      *
@@ -244,9 +244,9 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       });
       return node;
     };
-  
+
     var isText = makePredByNodeName('#text');
-  
+
     /**
      * returns #text's text size or element's childNodes size
      *
@@ -305,7 +305,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
         }
       }
     };
-  
+
     /**
      * return offsetPath(array of offset) from ancestor
      *
@@ -316,7 +316,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       var aAncestor = list.initial(listAncestor(node, func.eq(ancestor)));
       return $.map(aAncestor, position).reverse();
     };
-  
+
     /**
      * return element from offsetPath(array of offset)
      *
@@ -330,7 +330,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
       }
       return current;
     };
-  
+
     /**
      * split element or #text
      *
@@ -340,16 +340,16 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
     var split = function (node, offset) {
       if (offset === 0) { return node; }
       if (offset >= length(node)) { return node.nextSibling; }
-  
+
       // splitText
       if (isText(node)) { return node.splitText(offset); }
-  
+
       // splitElement
       var child = node.childNodes[offset];
       node = insertAfter(node.cloneNode(false), node);
       return appends(node, listNext(child));
     };
-  
+
     /**
      * split dom tree by boundaryPoint(pivot and offset)
      *
@@ -379,7 +379,7 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
     var remove = function (node, bRemoveChild) {
       if (!node || !node.parentNode) { return; }
       if (node.removeNode) { return node.removeNode(bRemoveChild); }
-  
+
       var elParent = node.parentNode;
       if (!bRemoveChild) {
         var aNode = [];
@@ -387,22 +387,21 @@ define(['summernote/core/func', 'summernote/core/list', 'summernote/core/agent']
         for (i = 0, sz = node.childNodes.length; i < sz; i++) {
           aNode.push(node.childNodes[i]);
         }
-  
+
         for (i = 0, sz = aNode.length; i < sz; i++) {
           elParent.insertBefore(aNode[i], node);
         }
       }
-  
+
       elParent.removeChild(node);
     };
-  
+
     var html = function ($node) {
       return dom.isTextarea($node[0]) ? $node.val() : $node.html();
     };
-  
+
     return {
       blank: agent.isMSIE ? '&nbsp;' : '<br/>',
-      emptyPara: '<p><br/></p>',
       isEditable: isEditable,
       isControlSizing: isControlSizing,
       buildLayoutInfo: buildLayoutInfo,
