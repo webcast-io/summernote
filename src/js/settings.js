@@ -261,7 +261,7 @@ define('summernote/settings', function () {
         options: {
           help: 'Help',
           fullscreen: 'Full Screen',
-          codeview: 'Code View'
+          codeview: 'HTML editor'
         },
         paragraph: {
           paragraph: 'Paragraph',
