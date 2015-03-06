@@ -6,7 +6,7 @@
  * Copyright 2013 Alan Hong. and outher contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2014-10-21T15:01Z
+ * Date: 2015-03-06T13:33Z
  */
 (function (factory) {
   /* global define */
@@ -3322,7 +3322,7 @@
       var dropdown = options.dropdown;
 
       return '<button type="button"' +
-                 ' class="btn btn-default btn-sm btn-small' +
+                 ' class="btn btn-primary btn-sm btn-small' +
                    (className ? ' ' + className : '') +
                    (dropdown ? ' dropdown-toggle' : '') +
                  '"' +
